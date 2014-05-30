@@ -1,0 +1,101 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>glg-nectar</title>
+    <script src="bower_components/platform/platform.js"></script>
+    <link rel="import" href="bower_components/polymer/polymer.html">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
+    <link rel="import" href="build/glg-nectar.html">
+    <link rel="import" href="node_modules/ui-typeahead/ui-typeahead.html">
+    <style>
+      body {
+        font-family: "Helvetica Neue", "Helvetica", Arial;
+        color: #454545;
+      }
+
+      ui-typeahead-item {
+        padding: 1em 2em;
+      }
+
+      ui-typeahead-item i {
+        margin-right: .5em;
+      }
+
+      ui-typeahead-item strong {
+        margin-right: .25em;
+      }
+
+      ui-typeahead-item[focused] {
+        background: #eee;
+      }
+
+      ui-typeahead-item[selected] {
+        background: #4477aa;
+        color: #fff;
+      }
+
+      ui-typeahead .separator {
+        padding: 1em 2em;
+        background: #f5f5f5;
+      }
+
+
+    </style>
+  </head>
+  <body unresolved>
+    <div id="holder">
+      
+      <!-- nectar wrapper -->
+      <glg-nectar 
+          urls="wss://nectar.glgroup.com/ws" 
+          entities='["cm", "client-contact"]'
+          trigger="inputChange"
+          limit="20"
+          >
+
+        <ui-typeahead 
+          icon="fa-search"
+          placeholder="Enter stuff">
+              
+              <template id="results" repeat="{{resultset}}">
+                <div>
+                  <div class="separator">
+                    {{type}}
+                  </div>
+                  <template repeat="{{results}}">
+                    
+                    <ui-typeahead-item>
+                      <i class="fa fa-user {{type}}"></i> 
+                      <strong>{{name}}</strong> 
+                      <span>{{title}}</span>                    
+                    </ui-typeahead-item>
+
+                  </template>
+                </div>
+              </template>
+
+          </template>
+        </ui-typeahead>
+      </glg-nectar>
+    </div>
+    <script>
+      
+
+      document.addEventListener('polymer-ready', function() {
+        //poke your element here
+        var nectar = document.querySelector('glg-nectar');
+        var template = document.querySelector('#results');
+        
+
+        nectar.addEventListener('results', function(evt) {
+          
+          template.model = evt.detail;
+          Platform.performMicrotaskCheckpoint(); 
+          console.log("template model updated", template.model);
+        });
+      });
+
+    </script>
+  </body>
+</html>
