@@ -24,15 +24,27 @@
         @entitiesParsed = e        
 
       loadResults: (evt) ->
-        query = 
-          entity: @entitiesParsed, 
-          query: evt.detail.value
-          options:  
-            howMany: @limit
-            interleave: false
+        if evt.detail.value.length > 0 
+          query = 
+            entity: @entitiesParsed, 
+            query: evt.detail.value
+            options:  
+              howMany: @limit
+              interleave: false
 
-        @$.socket.send query, (response) =>
-          @results = response.results
-          @resultset = _.map response.results, (results,type) -> { type, results }
+          @$.socket.send query, (response) =>
+            @results = response.results
+            @resultset = _.map response.results, (results,type) -> { type, results }
+            @fire 'results', { query: query, results: @results, resultset: @resultset }
+        else 
+          query=
+            entity: null,
+            query: "",
+            options:
+              howMany: 0
+              interleave: false
+
+          @results = null
+          @resultset = []
           @fire 'results', { query: query, results: @results, resultset: @resultset }
           
