@@ -16,6 +16,7 @@
     "gulp-replace": "",
     "gulp-shell": "",
     "lodash": "2.4.0",
+    "font-awesome": "",
     "polymer": "git://github.com/Custom-Elements/polymer",
     "ui-typeahead": "git://github.com/nandrews0424/ui-typeahead",
     "vulcanize": ""
