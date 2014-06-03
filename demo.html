@@ -3,9 +3,9 @@
 <html>
   <head>
     <title>glg-nectar</title>
-    <script src="bower_components/platform/platform.js"></script>
-    <link rel="import" href="bower_components/polymer/polymer.html">
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
+    <script src="node_modules/polymer/platform.js"></script>
+    <link rel="import" href="node_modules/polymer/polymer.html">
+    <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css">
     <link rel="import" href="build/glg-nectar.html">
     <link rel="import" href="node_modules/ui-typeahead/ui-typeahead.html">
     <style>
@@ -46,6 +46,7 @@
   <body unresolved>
     <div id="holder">
       
+
       <!-- nectar wrapper -->
       <glg-nectar 
           urls="wss://nectar.glgroup.com/ws" 
@@ -57,7 +58,7 @@
         <ui-typeahead 
           icon="fa-search"
           placeholder="Enter stuff">
-              
+
               <template id="results" repeat="{{resultset}}">
                 <div>
                   <div class="separator">
@@ -78,6 +79,13 @@
           </template>
         </ui-typeahead>
       </glg-nectar>
+
+      <template repeat="{{items in resultset">
+        stuff here....
+      </template>
+
+
+
     </div>
     <script>
       

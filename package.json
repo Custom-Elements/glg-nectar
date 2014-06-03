@@ -2,26 +2,27 @@
   "name": "glg-nectar",
   "version": "0.0.0",
   "dependencies": {
-    "coffeeify": "",
-    "coffee-script": "",
     "browserify": "",
     "browserify-data": "",
+    "coffee-script": "",
+    "coffeeify": "",
+    "core-websocket": "git://github.com/nandrews0424/core-websocket",
+    "express": "",
     "gulp": "",
     "gulp-browserify": "",
-    "gulp-shell": "",
-    "gulp-less": "",
-    "gulp-replace": "",
-    "gulp-rename": "",
     "gulp-concat": "",
-    "vulcanize": "",
-    "express": "",
-    "core-websocket": "git://github.com/nandrews0424/core-websocket#master",
+    "gulp-less": "",
+    "gulp-rename": "",
+    "gulp-replace": "",
+    "gulp-shell": "",
+    "lodash": "2.4.0",
+    "polymer": "git://github.com/Custom-Elements/polymer",
     "ui-typeahead": "git://github.com/nandrews0424/ui-typeahead",
-    "lodash": "^2.4.1"
+    "vulcanize": ""
   },
   "license": "MIT",
   "scripts": {
-    "postinstall": "bower install && gulp --require coffee-script/register --gulpfile gulpfile.litcoffee build",
-    "test": "gulp --require coffee-script/register --gulpfile gulpfile.litcoffee watch"
+    "postinstall": "gulp build",
+    "test": "gulp watch"
   }
 }
