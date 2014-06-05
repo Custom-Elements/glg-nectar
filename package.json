@@ -18,7 +18,7 @@
     "lodash": "2.4.0",
     "font-awesome": "",
     "polymer": "git://github.com/Custom-Elements/polymer",
-    "ui-typeahead": "git://github.com/nandrews0424/ui-typeahead",
+    "ui-typeahead": "git://github.com/Custom-Elements/ui-typeahead",
     "vulcanize": ""
   },
   "license": "MIT",
