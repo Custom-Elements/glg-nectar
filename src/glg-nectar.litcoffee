@@ -52,4 +52,5 @@ This method should only ever really be called by event handling specified by the
           @results = null
           @resultset = []
           @fire 'results', { query: query, results: @results, resultset: @resultset }
+          Platform.performMicrotaskCheckpoint()
           
