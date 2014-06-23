@@ -9,8 +9,7 @@
     "polymer-tools": "git://github.com/custom-elements/polymer-tools#master",
     "ui-fonts": "git://github.com/custom-elements/ui-fonts#master",
     "ui-styles": "git://github.com/custom-elements/ui-styles",
-    "ui-typeahead": "git://github.com/custom-elements/ui-typeahead",
-    "ui-toolkit": "0.0.8"
+    "ui-typeahead": "git://github.com/custom-elements/ui-typeahead"
   },
   "license": "ISC",
   "scripts": {
