@@ -34,7 +34,7 @@ The urls to the server, can be either a single or array of urls if client-side l
 This method should only ever really be called by event handling specified by the `trigger` attribute.
 
       loadResults: (evt) ->
-        if evt.detail.value.length > 0
+        if evt.detail.value?.length > 0
           query =
             entity: @entitiesParsed,
             query: evt.detail.value
