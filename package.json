@@ -3,13 +3,11 @@
   "version": "0.0.0",
   "dependencies": {
     "core-websocket": "git://github.com/custom-elements/core-websocket#master",
-    "livereloader": "^0.1.0",
     "lodash": "^2.4.1",
     "polymer": "git://github.com/custom-elements/polymer#master",
     "polymer-tools": "git://github.com/custom-elements/polymer-tools#master",
     "ui-fonts": "git://github.com/custom-elements/ui-fonts#master",
-    "ui-styles": "git://github.com/custom-elements/ui-styles",
-    "ui-typeahead": "git://github.com/custom-elements/ui-typeahead"
+    "ui-styles": "git://github.com/custom-elements/ui-styles"
   },
   "license": "ISC",
   "scripts": {
