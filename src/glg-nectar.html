@@ -1,6 +1,6 @@
-<link rel="import" href="../node_modules/core-websocket/build/core-websocket.html" />
+<link rel="import" href="../node_modules/core-websocket/src/core-websocket.html" />
 
-<polymer-element name="glg-nectar" attributes="urls limit entities results resultset trigger">
+<polymer-element name="glg-nectar" attributes="urls entities trigger options results resultset">
 <template>
   <content></content>
   <core-websocket id="socket" urls="{{urls}}"></core-websocket>

@@ -1,4 +1,4 @@
-#glg-nectar
+# glg-nectar
 This element provides access to GLG's nectar search service, listening for the specified
 event and retrieving data from the configured indexes. Use it to wrap a particular element
 that you'd like to trigger data retrieval.
@@ -6,23 +6,17 @@ that you'd like to trigger data retrieval.
     _ = require('lodash')
     Polymer 'glg-nectar',
 
-##Events
-###nectarQuery
-Fired when a query is being sent to nectar. Great place to update the UI
-with progress/spinners.
-
-##Attributes and Change Handlers
-####trigger
-The name of the event that the element will listen for to trigger data retrieval.
-This event currently needs to expose a `value` property on the event details that's sent along as the query
-####entities
-The nectar entities/indexes to load data from.  Can either be an array or a string.
-####urls
+## Attributes and Change Handlers
+### urls
 The urls to the server, can be either a single or array of urls if client-side load balancing is needed.
 
-      triggerChanged: (oldVal,newVal) ->
-        @removeEventListener oldVal, @loadResults if oldVal
-        @addEventListener newVal, @loadResults
+### entities
+The nectar entities/indexes to load data from.  Can either be an array or a string.
+
+## Events
+### entitiesChanged
+Fired when a query is being sent to nectar. Great place to update the UI
+with progress/spinners.
 
       entitiesChanged: ->
         e = @entities
@@ -31,16 +25,14 @@ The urls to the server, can be either a single or array of urls if client-side l
 
 ##Methods
 ####loadResults
-This method should only ever really be called by event handling specified by the `trigger` attribute.
+This retrieves results from nectar and fires the 'results' event when results are available.
 
       loadResults: (evt) ->
         if evt.detail.value?.length > 0
           query =
             entity: @entitiesParsed,
             query: evt.detail.value
-            options:
-              howMany: @limit
-              interleave: false
+            options: JSON.parse(@options) ? {}
 
           @fire 'nectarQuery', query
           @$.socket.send query, (response) =>
@@ -51,9 +43,7 @@ This method should only ever really be called by event handling specified by the
           query=
             entity: null,
             query: "",
-            options:
-              howMany: 0
-              interleave: false
+            options: JSON.parse(@options) ? {}
 
           @results = null
           @resultset = []

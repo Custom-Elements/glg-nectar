@@ -3,57 +3,74 @@
 <html>
   <head>
     <title>glg-nectar</title>
-    <script src="http://localhost:35729/livereload.js"></script>
-    <script src="node_modules/polymer/platform.js"></script>
-    <link rel="stylesheet" href="node_modules/ui-fonts/font-awesome.less">
-    <link rel="stylesheet" href="node_modules/ui-styles/ui-styles.less">
-    <link rel="import" href="node_modules/polymer/polymer.html">
-    <link rel="import" href="build/glg-nectar.html">
-    <link rel="import" href="node_modules/ui-typeahead/src/ui-typeahead.html">
-     <style>
+    <script src="node_modules/webcomponents.js/webcomponents.js"></script>
+    <link rel="import" href="https://services.glgresearch.com/ui-toolkit/polymer.html">
+    <link rel="import" href="https://services.glgresearch.com/ui-toolkit/ui-toolkit.html">
+    <link rel="import" href="src/glg-nectar.html">
+    <style>
       body {
         font-family: "Helvetica Neue", "Helvetica", Arial;
         color: #454545;
       }
-
       ui-typeahead {
-        width: 50%;
+        width: 30em;
       }
-
-    </style> 
+    </style>
   </head>
-  <body unresolved>
-    <div id="holder" tile>
-      <!-- nectar wrapper -->
-      <glg-nectar 
-          urls="wss://nectar.glgroup.com/ws"
-          entities='["cm", "cm-localized"]'
-          trigger="inputChange"
-          limit="20"
-          >
-        <ui-typeahead 
+  <body container unresolved>
+    <!-- nectar adapter with custom options set -->
+    <glg-nectar
+        urls="wss://nectar.glgroup.com/ws"
+        entities='["cm", "cm-localized", "cm-companies", "consults"]'
+        trigger="inputChange"
+        options='{
+          "interleave":"true",
+          "boostPrefix":"false"
+          "scoreThreshold":"0.75"
+          "howMany":"10"
+          "startPos":"0"
+          "secondarySortField":"name"
+          "secondarySortOrder":"asc"
+          "loggingOn":"true"
+          }'>
+    </glg-nectar>
+    <h1>glg-nectar demo</h1>
+    <div id="holder" tile style="margin: 20px 0px 10px 10px;">
+      <ui-typeahead
+          id="omni"
           icon="fa-search"
-          placeholder="Enter stuff"
+          placeholder="Start typing here..."
           debounce="200">
-              <template id="results" repeat="{{resultset}}">
-                  <template repeat="{{results}}">
-                    <ui-typeahead-item>
-                      <i class="fa fa-user {{type}}"></i>
-                      <strong>{{name}}</strong>
-                      <span>{{title}}</span>
-                    </ui-typeahead-item>
-                  </template>
-              </template>
-        </ui-typeahead>
-      </glg-nectar>
+        <icon search></icon>
+
+        <template value>
+          <!-- TODO: display top returned item else if no results, display the user entered text -->
+          <!-- TODO: may need to change the ui-typeahead component to accomplish this behavior -->
+          <value>{{ text }}</value>
+        </template>
+        <!-- dynamically templated items in the selection list -->
+        <template id="typeahead-results" repeat="{{results}}">
+          <!-- typeahead items are the drop down -->
+          <ui-typeahead-item>
+            <!-- <span><icon icon="{{icon}}"></icon></span> -->
+            <span><strong>{{name}}</strong>, {{title}}</span>
+          </ui-typeahead-item>
+        </template>
+      </ui-typeahead>
     </div>
     <script>
       document.addEventListener('polymer-ready', function() {
         //poke your element here
         var nectar = document.querySelector('glg-nectar');
-        var template = document.querySelector('#results');
+        var template = document.querySelector('#typeahead-results');
 
-        nectar.addEventListener('results', function(evt) {
+        document.addEventListener('inputchange', function(evt) {
+          nectar.loadResults(evt);
+          Platform.performMicrotaskCheckpoint();
+          console.log("template model updated", template.model);
+        });
+
+        document.addEventListener('results', function(evt) {
           template.model = evt.detail;
           Platform.performMicrotaskCheckpoint();
           console.log("template model updated", template.model);

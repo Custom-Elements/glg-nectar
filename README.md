@@ -1,48 +1,32 @@
-#glg-nectar
-This element provides access to GLG's nectar search service, listening for the specified 
-event and retrieving data from the configured indexes. Use it to wrap a particular element 
-that you'd like to trigger data retrieval.
+# glg-nectar
+A polymer component that provides a declarative way to drop GLG's nectar
+autocomplete service onto a page.  It exposes the various search options
+available as published attributes.
 
+See the [nectar documentation](http://nectar.glgroup.com/docs "Nectar Documentation") for more information about the service
+itself.
 
+To see the events, attributes, and methods of the glg-nectar polymer
+component, take a look at the [literate coffeescript source files](src/glg-nectar.litcoffee).
 
-##Attributes and Change Handlers
-####trigger
-The name of the event that the element will listen for to trigger data retrieval. 
-This event currently needs to expose a `value` property on the event details that's sent along as the query
-####entities
-The nectar entities/indexes to load data from.  Can either be an array or a string.
-####urls
-The urls to the server, can be either a single or array of urls if client-side load balancing is needed.
+## usage
+Include the glg-nectar polymer component in your package.json.
 
+    "glg-nectar":"git://github.com/custom-elements/glg-nectar#master"
 
+Import the glg-nectar.html in your HTML.
 
+    <link rel="import" href="node_modules/glg-nectar/src/glg-nectar.html"></script>
 
+## polyfills
+Using the glg-nectar polymer component of course presumes that the
+browsers in use will support:
+* custom elements
+* HTML imports
+* templates
+* shadow dom
 
+If older browsers need to be supported, you should include the
+webcomponents polyfill in your HTML.
 
-
-
-##Methods
-####loadResults
-This method should only ever really be called by event handling specified by the `trigger` attribute. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+`<script src="node_modules/webcomponents.js/webcomponents.js"></script>`
