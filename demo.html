@@ -9,7 +9,7 @@
     <link rel="import" href="src/glg-nectar.html">
     <style>
       body {
-        font-family: "Helvetica Neue", "Helvetica", Arial;
+        font-family: "Helvetica Neue", "Helvetica", "Arial";
         color: #454545;
       }
       ui-typeahead {
@@ -18,24 +18,23 @@
     </style>
   </head>
   <body container unresolved>
-    <!-- nectar adapter with custom options set -->
-    <glg-nectar
-        urls="wss://nectar.glgroup.com/ws"
-        entities='["cm", "cm-localized", "cm-companies", "consults"]'
-        trigger="inputChange"
-        options='{
-          "interleave":"true",
-          "boostPrefix":"false"
-          "scoreThreshold":"0.75"
-          "howMany":"10"
-          "startPos":"0"
-          "secondarySortField":"name"
-          "secondarySortOrder":"asc"
-          "loggingOn":"true"
-          }'>
-    </glg-nectar>
     <h1>glg-nectar demo</h1>
-    <div id="holder" tile style="margin: 20px 0px 10px 10px;">
+    <div id="myNectarDemo" tile style="margin: 20px 0px 10px 10px;">
+      <!-- nectar adapter with custom options set -->
+      <glg-nectar
+          urls="wss://nectar.glgroup.com/ws"
+          entities='["employee"]'
+          trigger="inputChange"
+          options='{"interleave":true,
+              "boostPrefix": true,
+              "scoreThreshold": 0.5,
+              "howMany": 10,
+              "startPos": 0,
+              "secondarySortField": "name",
+              "secondarySortOrder": "asc",
+              "loggingOn": false
+          }'>
+      </glg-nectar>
       <ui-typeahead
           id="omni"
           icon="fa-search"
@@ -43,17 +42,11 @@
           debounce="200">
         <icon search></icon>
 
-        <template value>
-          <!-- TODO: display top returned item else if no results, display the user entered text -->
-          <!-- TODO: may need to change the ui-typeahead component to accomplish this behavior -->
-          <value>{{ text }}</value>
-        </template>
         <!-- dynamically templated items in the selection list -->
-        <template id="typeahead-results" repeat="{{results}}">
-          <!-- typeahead items are the drop down -->
+        <!-- assumes results are interleaved, not grouped by entity -->
+        <template id="foo" repeat="{{matches}}">
           <ui-typeahead-item>
-            <!-- <span><icon icon="{{icon}}"></icon></span> -->
-            <span><strong>{{name}}</strong>, {{title}}</span>
+            <span><strong>{{name}}</strong></span>
           </ui-typeahead-item>
         </template>
       </ui-typeahead>
@@ -61,17 +54,18 @@
     <script>
       document.addEventListener('polymer-ready', function() {
         //poke your element here
-        var nectar = document.querySelector('glg-nectar');
-        var template = document.querySelector('#typeahead-results');
+        var demo = document.querySelector('div#myNectarDemo');
+        var nectar = demo.querySelector('glg-nectar');
+        var template = demo.querySelector('#foo');
 
-        document.addEventListener('inputchange', function(evt) {
+        demo.addEventListener('inputchange', function(evt) {
           nectar.loadResults(evt);
           Platform.performMicrotaskCheckpoint();
-          console.log("template model updated", template.model);
+          console.log("nectar query fired", evt);
         });
 
-        document.addEventListener('results', function(evt) {
-          template.model = evt.detail;
+        demo.addEventListener('results', function(evt) {
+          template.model = evt.detail.results;
           Platform.performMicrotaskCheckpoint();
           console.log("template model updated", template.model);
         });

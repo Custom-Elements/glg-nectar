@@ -15,37 +15,38 @@ The nectar entities/indexes to load data from.  Can either be an array or a stri
 
 ## Events
 ### entitiesChanged
-Fired when a query is being sent to nectar. Great place to update the UI
-with progress/spinners.
+Parse entities published attribute whenever it changes.
 
       entitiesChanged: ->
-        e = @entities
-        e = JSON.parse(e) if e[0] is '['
-        @entitiesParsed = e
+        @entitiesParsed = JSON.parse(@entities) ? @entities
+
+### optionsChanged
+Parse options published attribute whenever it changes.
+
+      optionsChanged: ->
+        @optionsParsed = JSON.parse(@options) ? {}
 
 ##Methods
 ####loadResults
 This retrieves results from nectar and fires the 'results' event when results are available.
 
       loadResults: (evt) ->
+        # TODO: Add support for jump to by ID
         if evt.detail.value?.length > 0
           query =
-            entity: @entitiesParsed,
+            entity: @entitiesParsed
             query: evt.detail.value
-            options: JSON.parse(@options) ? {}
+            options: @optionsParsed
 
           @fire 'nectarQuery', query
           @$.socket.send query, (response) =>
             @results = response.results
-            @resultset = _.map response.results, (results,type) -> { type, results }
-            @fire 'results', { query: query, results: @results, resultset: @resultset }
+            @fire 'results', { query: query, results: @results }
         else
           query=
-            entity: null,
-            query: "",
-            options: JSON.parse(@options) ? {}
+            entity: @entitiesParsed
+            query: ""
+            options: @optionsParsed
 
-          @results = null
-          @resultset = []
-          @fire 'results', { query: query, results: @results, resultset: @resultset }
-          Platform.performMicrotaskCheckpoint()
+          @results = {}
+          @fire 'results', { query: query, results: @results }
