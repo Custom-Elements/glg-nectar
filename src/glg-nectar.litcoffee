@@ -1,7 +1,7 @@
 # glg-nectar
 This element provides access to GLG's nectar autocomplete service. Use the `options` published attribute
-to configure nectar's query options and the `loadResults` method to fire a query to the service.  This
-element then fires a `results` event when results are ready.
+to configure nectar's query options and either the `query` or `jump` methods to fire a query to the service.
+When results are ready the element then fires a `results` event.
 
     Polymer 'glg-nectar',
 
