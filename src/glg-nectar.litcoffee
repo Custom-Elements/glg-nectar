@@ -1,19 +1,25 @@
 # glg-nectar
-This element provides access to GLG's nectar search service, listening for the specified
-event and retrieving data from the configured indexes. Use it to wrap a particular element
-that you'd like to trigger data retrieval.
+This element provides access to GLG's nectar autocomplete service. Use the `options` published attribute
+to configure nectar's query options and the `loadResults` method to fire a query to the service.  This
+element then fires a `results` event when results are ready.
 
-    _ = require('lodash')
     Polymer 'glg-nectar',
 
-## Attributes and Change Handlers
+## Attributes
 ### urls
-The urls to the server, can be either a single or array of urls if client-side load balancing is needed.
+The url(s) to the server, can be either a single url or an array of urls that the
+websocket component will use to find the fastest responding end point. See the glg-nectar.html file
+for usage.
 
 ### entities
-The nectar entities/indexes to load data from.  Can either be an array or a string.
+The nectar entities/indexes from which to load data.  Can either be an array of entity names or
+a string that is the name of a single entity.
 
-## Events
+### options
+A javascript object containing one or more of the available nectar search configuration options.
+https://github.com/glg/nectar#api
+
+## Event Handlers
 ### entitiesChanged
 Parse entities published attribute whenever it changes.
 
@@ -26,27 +32,35 @@ Parse options published attribute whenever it changes.
       optionsChanged: ->
         @optionsParsed = JSON.parse(@options) ? {}
 
-##Methods
-####loadResults
-This retrieves results from nectar and fires the 'results' event when results are available.
+## Methods
+### query
+Retrieves results from nectar based on query text and fires the 'results' event
+when results are available.
 
-      loadResults: (evt) ->
-        # TODO: Add support for jump to by ID
-        if evt.detail.value?.length > 0
-          query =
-            entity: @entitiesParsed
-            query: evt.detail.value
-            options: @optionsParsed
+      query: (val) ->
+        input = if val.length > 0 then val else ''
+        msg =
+          entity: @entitiesParsed
+          query: input
+          options: @optionsParsed
 
-          @fire 'nectarQuery', query
-          @$.socket.send query, (response) =>
-            @results = response.results
-            @fire 'results', { query: query, results: @results }
-        else
-          query=
-            entity: @entitiesParsed
-            query: ""
-            options: @optionsParsed
+        @fire 'nectarQuery', msg
+        @$.socket.send msg, (response) =>
+          @results = if val.length > 0 then response.results else {}
+          @fire 'results', { msg: msg, results: @results }
 
-          @results = {}
-          @fire 'results', { query: query, results: @results }
+### jump
+Retrieves results from nectar based on object ID and fires the 'results' event
+when results are available.
+
+      jump: (val) ->
+        input = if val.length > 0 then val else ''
+        msg =
+          entity: @entitiesParsed
+          jump: input
+          options: @optionsParsed
+
+        @fire 'nectarQuery', msg
+        @$.socket.send msg, (response) =>
+          @results = if val.length > 0 then response.results else {}
+          @fire 'results', { msg: msg, results: @results }

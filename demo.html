@@ -24,7 +24,6 @@
       <glg-nectar
           urls="wss://nectar.glgroup.com/ws"
           entities='["employee"]'
-          trigger="inputChange"
           options='{"interleave":true,
               "boostPrefix": true,
               "scoreThreshold": 0.5,
@@ -46,7 +45,7 @@
         <!-- assumes results are interleaved, not grouped by entity -->
         <template id="foo" repeat="{{matches}}">
           <ui-typeahead-item>
-            <span><strong>{{name}}</strong></span>
+          <span><strong>{{name}}</strong>, <i>{{title}}</i> | {{location}} Office (&nbsp;ID:{{id}}&nbsp;)</span>
           </ui-typeahead-item>
         </template>
       </ui-typeahead>
@@ -59,9 +58,16 @@
         var template = demo.querySelector('#foo');
 
         demo.addEventListener('inputchange', function(evt) {
-          nectar.loadResults(evt);
-          Platform.performMicrotaskCheckpoint();
-          console.log("nectar query fired", evt);
+          if (typeof evt.detail.value !== 'undefined') {
+            if (isNaN(evt.detail.value)) {
+              nectar.query(evt.detail.value);
+            }
+            else {
+              nectar.jump(evt.detail.value);
+            }
+            Platform.performMicrotaskCheckpoint();
+            console.log("nectar query fired", evt);
+          }
         });
 
         demo.addEventListener('results', function(evt) {

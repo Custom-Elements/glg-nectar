@@ -1,8 +1,9 @@
 <link rel="import" href="../node_modules/core-websocket/src/core-websocket.html" />
 
-<polymer-element name="glg-nectar" attributes="urls entities trigger options results resultset">
+<polymer-element name="glg-nectar" attributes="urls entities options results">
 <template>
   <content></content>
+  <!-- urls attribute set in glg-nectar element is passed through to the ws element here -->
   <core-websocket id="socket" urls="{{urls}}"></core-websocket>
 </template>
 <script src="./glg-nectar.litcoffee"></script>
