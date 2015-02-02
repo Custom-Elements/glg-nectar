@@ -3,8 +3,8 @@ A polymer component that provides a declarative way to drop GLG's nectar
 autocomplete service onto a page.  It exposes the various search options
 available as published attributes.
 
-See the [nectar documentation](http://nectar.glgroup.com/docs "Nectar Documentation") for more information about the service
-itself.
+See the [nectar API](https://github.com/glg/nectar/tree/prod#api "Nectar API") for more information about the service
+itself and the [status page](https://nectar.glgroup.com/status "Nectar Status") to see what entities/indexes are available.
 
 To see the events, attributes, and methods of the glg-nectar polymer
 component, take a look at the [literate coffeescript source files](src/glg-nectar.litcoffee).
