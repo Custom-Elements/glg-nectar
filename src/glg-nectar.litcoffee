@@ -7,30 +7,38 @@ When results are ready the element then fires a `results` event.
 
 ## Attributes
 ### urls
-The url(s) to the server, can be either a single url or an array of urls that the
+The url(s) to the server, can be either a single url or a JSON representation of an array of urls that the
 websocket component will use to find the fastest responding end point. See the glg-nectar.html file
 for usage.
 
 ### entities
-The nectar entities/indexes from which to load data.  Can either be an array of entity names or
+The nectar entities/indexes from which to load data.  Can either be a JSON representation of array of entity names in JSON notation or
 a string that is the name of a single entity.
 
 ### options
-A javascript object containing one or more of the available nectar search configuration options.
+A JSON representation of an object containing one or more of the available nectar search configuration options.
 https://github.com/glg/nectar#api
 
-## Event Handlers
+## Change-event Handlers
 ### entitiesChanged
-Parse entities published attribute whenever it changes.
+Parse entities published attribute whenever it changes. Entities must be an array of strings.
 
       entitiesChanged: ->
-        @entitiesParsed = JSON.parse(@entities) ? @entities
+        try
+          @entitiesParsed = JSON.parse(@entities)
+        catch err
+          console.warn "Could not JSON.parse entities attribute: #{err}"
+          @entitiesParsed = []
 
 ### optionsChanged
 Parse options published attribute whenever it changes.
 
       optionsChanged: ->
-        @optionsParsed = JSON.parse(@options) ? {}
+        try
+          @optionsParsed = JSON.parse(@options)
+        catch err
+          console.warn "Could not JSON.parse options attribute: #{err}"
+          @optionsParsed = {}
 
 ## Methods
 ### query
