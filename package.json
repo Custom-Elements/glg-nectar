@@ -1,6 +1,6 @@
 {
   "name": "glg-nectar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "polymer-serve": "git://github.com/custom-elements/polymer-serve#master",
     "webcomponents": "git://github.com/custom-elements/webcomponentsjs#master",
