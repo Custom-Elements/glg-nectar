@@ -20,55 +20,41 @@ A JSON representation of an object containing one or more of the available necta
 https://github.com/glg/nectar#api
 
 ## Change-event Handlers
-### entitiesChanged
-Parse entities published attribute whenever it changes. Entities must be an array of strings.
-
-      entitiesChanged: ->
-        try
-          @entitiesParsed = JSON.parse(@entities)
-        catch err
-          console.warn "Could not JSON.parse entities attribute: #{err}"
-          @entitiesParsed = []
-
-### optionsChanged
-Parse options published attribute whenever it changes.
-
-      optionsChanged: ->
-        try
-          @optionsParsed = JSON.parse(@options)
-        catch err
-          console.warn "Could not JSON.parse options attribute: #{err}"
-          @optionsParsed = {}
+None
 
 ## Methods
+### search
+Retrieves results for either query or jump
+
+      search: (val, type='query') ->
+        msg =
+            entity: @entities?.split ','
+            options:
+              interleave: @interleave.toLowerCase() is 'true'
+              boostPrefix: @boostPrefix.toLowerCase() is 'true'
+              scoreThreshold: @scoreThreshold
+              howMany: @howMany
+              startPos: @startPos
+              secondarySortField: @secondarySortField
+              secondarySortOrder: @secondarySortOrder
+        if val?.length > 0 and @entities?.length > 0
+          msg[type] = val
+          @fire 'nectarQuery', msg
+          @$.socket.send msg, (response) =>
+            @fire 'results', { msg: msg, results: response.results }
+        else
+          @fire 'results', { msg: msg, results: [] }
+
 ### query
 Retrieves results from nectar based on query text and fires the 'results' event
 when results are available.
 
       query: (val) ->
-        input = if val.length > 0 then val else ''
-        msg =
-          entity: @entitiesParsed
-          query: input
-          options: @optionsParsed
-
-        @fire 'nectarQuery', msg
-        @$.socket.send msg, (response) =>
-          @results = if val.length > 0 then response.results else {}
-          @fire 'results', { msg: msg, results: @results }
+        @search val, 'query'
 
 ### jump
 Retrieves results from nectar based on object ID and fires the 'results' event
 when results are available.
 
       jump: (val) ->
-        input = if val.length > 0 then val else ''
-        msg =
-          entity: @entitiesParsed
-          jump: input
-          options: @optionsParsed
-
-        @fire 'nectarQuery', msg
-        @$.socket.send msg, (response) =>
-          @results = if val.length > 0 then response.results else {}
-          @fire 'results', { msg: msg, results: @results }
+        @search val, 'jump'

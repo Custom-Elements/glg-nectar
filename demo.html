@@ -23,21 +23,20 @@
       <!-- nectar adapter with custom options set -->
       <glg-nectar
           urls="wss://nectar.glgroup.com/ws"
-          entities='["employee"]'
-          options='{"interleave":true,
-              "boostPrefix": true,
-              "scoreThreshold": 0.5,
-              "howMany": 10,
-              "startPos": 0,
-              "secondarySortField": "name",
-              "secondarySortOrder": "asc",
-              "loggingOn": false}'
-          >
+          entities="employee,client-contact"
+          interleave="true"
+          boostPrefix="true"
+          scoreThreshold="0.5"
+          howMany="10"
+          startPos="0"
+          secondarySortField="name"
+          secondarySortOrder="asc"
       </glg-nectar>
       <ui-typeahead
           id="omni"
           icon="fa-search"
           placeholder="Type employee name..."
+          sticky
           debounce="200">
         <icon search></icon>
 
