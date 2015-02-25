@@ -27,16 +27,17 @@ None
 Retrieves results for either query or jump
 
       search: (val, type='query') ->
+        options = {}
+        options.interleave = @interleave.toLowerCase() is 'true' if @interleave?
+        options.boostPrefix = @boostPrefix.toLowerCase() is 'true' if @boostPrefix?
+        options.scoreThreshold = @scoreThreshold if @scoreThreshold?
+        options.howMany = @howMany if @howMany?
+        options.startPos = @startPos if @startPos?
+        options.secondarySortField = @secondarySortField if @secondarySortField?
+        options.secondarySortOrder = @secondarySortOrder if @secondarySortOrder?
         msg =
-            entity: @entities?.split ','
-            options:
-              interleave: @interleave.toLowerCase() is 'true'
-              boostPrefix: @boostPrefix.toLowerCase() is 'true'
-              scoreThreshold: @scoreThreshold
-              howMany: @howMany
-              startPos: @startPos
-              secondarySortField: @secondarySortField
-              secondarySortOrder: @secondarySortOrder
+          entity: @entities?.split ','
+          options: options
         if val?.length > 0 and @entities?.length > 0
           msg[type] = val
           @fire 'nectarQuery', msg
