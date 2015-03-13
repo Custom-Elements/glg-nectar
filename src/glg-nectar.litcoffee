@@ -37,6 +37,7 @@ Retrieves results for either query or jump
         options.secondarySortOrder = @secondarySortOrder if @secondarySortOrder?
         msg =
           entity: @entities?.split ','
+          appName: @appName ? window.location.hostname
           options: options
         if val?.length > 0 and @entities?.length > 0
           msg[type] = val
