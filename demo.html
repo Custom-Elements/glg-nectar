@@ -45,7 +45,7 @@
 
         <!-- dynamically templated items in the selection list -->
         <!-- assumes results are interleaved, not grouped by entity -->
-        <template id="foo" repeat="{{matches}}">
+        <template id="foo" repeat="{{matches}}" ng-non-bindable>
           <ui-typeahead-item>
           <span><strong>{{name}}</strong>, <i>{{title}}</i> | {{location}} Office (&nbsp;ID:{{id}}&nbsp;)</span>
           </ui-typeahead-item>
