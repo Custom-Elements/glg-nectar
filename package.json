@@ -1,8 +1,8 @@
 {
   "name": "glg-nectar",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "dependencies": {
-    "polymer-serve": "^0.0.30",
+    "polymer-serve": "^0.0.34",
     "webcomponents": "git://github.com/custom-elements/webcomponentsjs#master",
     "core-websocket": "git://github.com/custom-elements/core-websocket#master"
   },
